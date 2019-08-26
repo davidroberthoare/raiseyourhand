@@ -1,0 +1,204 @@
+/*BULMA overrides*/
+html{
+	height:100vh;
+}
+body{
+	height:100%;
+}
+
+.hero-body {
+    padding: 1rem 1.5rem;
+}
+.invisible{
+	visibility: hidden !important;
+}
+
+
+/*global custom styles*/
+
+.roleSection{
+	padding: 1em;
+}
+
+.role-player, .role-manager{
+	display:none;
+}
+
+
+/*PLAYER styles*/
+
+/*#closedBox{
+	position: absolute;
+	top:0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background: #fafafa;
+}*/
+/*.roleSection{
+	height: 100%;
+}*/
+.roleSection .state-question{
+}
+#p_QuestionContainer{
+	height: 75vh;
+}
+.p_AnswerContainer{
+	height: 100%;
+}
+
+#p_QuestionContainer .answerBtn span{
+	white-space: normal;
+	line-height: 100%;
+}
+
+#p_QuestionContainer .style-mult{
+	height: 100%
+}
+
+#p_QuestionContainer .style-mult .p_AnswerContainer{
+	display: flex;
+	flex-direction: column;
+}
+
+#p_QuestionContainer .style-mult .answerBtn{
+	/*margin: 1vh 0;*/
+	width: 100%;
+	/*height: 35vh;*/
+	color: white;
+	/*font-size: 50px;*/
+	font-weight: bold;
+	/*width: 200px;
+	height: 200px;*/
+	flex-grow:1;
+	display: flex;
+		flex-direction: column;
+    justify-content: center;
+    flex: 1;
+}
+
+#resultsChart{
+	max-height: 80vh;
+}
+
+
+
+/* BODY ANIMATED BACKGROUND  - webkit only*/
+/*@media screen and (-webkit-min-device-pixel-ratio:0) { */
+
+	#body_bg{
+	    position:fixed;
+	    top: -50vh;
+	    left: -50vw;
+	    width: 200vw;
+	    height: 200vh;
+	    background: #b1ffe4;
+	    z-index:-1;
+	}
+
+
+	#body_bg .bg {
+	  animation:slide 2s ease-in-out infinite alternate;
+	  background-image: linear-gradient(-45deg, #6c3 50%, #09f 50%);
+	  background:#09f;
+	  /*top:-20%;
+	  left:-50%;*/
+	  bottom:0px;
+	  right:0px;
+	  width:2vw;
+	  height:2vh;
+	  opacity:.5;
+	  position:fixed;
+	  z-index:-1;
+	  /*will-change: transform;*/
+	}
+
+	#body_bg .bg1 {
+		animation:slideX 10s ease-in-out infinite alternate;
+		will-change: transform;
+	  	/*transform: scale(100);*/
+	  	/*transform: rotate(45deg) scale(100);*/
+	}
+
+	#body_bg .bg2 {
+		animation:slideX 20s ease-in-out infinite alternate-reverse;
+	 	will-change: transform;
+	  	/*transform: scale(100);*/
+	}
+
+	#body_bg .bg3 {
+		animation:slideY 30s ease-in-out infinite alternate;
+	  	will-change: transform;
+	  	background: #6c3;
+	  	/*transform: scale(100);*/
+	}
+
+
+	@keyframes slideX {
+	  0% {
+	    transform:translateX(-150vw) rotate(0deg) scale(100);
+	  }
+	  100% {
+	    transform:translateX(100vw) rotate(90deg) scale(100);
+	  }
+	}
+
+	@keyframes slideY {
+	  0% {
+	    transform:translateY(-200vh) rotate(0deg) scale(100);
+	  }
+	  100% {
+	    transform:translateY(50vh) rotate(90deg) scale(100);
+	  }
+	}
+
+
+
+
+	/*.rotator{
+	    animation: spin 60s linear infinite;
+	}
+	@keyframes spin {
+	  0% {
+	    transform: rotate(0deg);
+	  }
+	  100% {
+	    transform: rotate(360deg);
+	  }
+	}*/
+
+/*}*/
+
+
+/*MANAGER styles*/
+#questionMode{
+	text-shadow: #0000008a 2px 2px 2px;
+	font-weight: bold;
+}
+
+#sendQuestionBtn{
+	box-shadow: #797979 3px 3px 5px;
+}
+
+#m_ResultsContainer, #p_ResultsContainer{
+	position: relative;
+	max-height: 80vh;
+	max-width: 80vh;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.answer_container.optional{
+	display: none;
+}
+
+#progressbarContainer {
+	position: relative;
+	/*width: 20vh;*/
+ 	margin: 20px auto;
+}
+#progressbar {
+	position: relative;
+	width: 20vh;
+ 	margin: 20px auto;
+}
