@@ -19,7 +19,7 @@ const app = express()
 
 const options = {
   key: fs.readFileSync('/etc/letsencrypt/live/raiseyourhand.app/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/raiseyourhand.app/cert.pem')
+  cert: fs.readFileSync('/etc/letsencrypt/live/raiseyourhand.app/fullchain.pem')
 };
 const server = https.createServer(options, app);
 // const server = http.createServer(app);
