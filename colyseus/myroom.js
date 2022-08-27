@@ -1,4 +1,4 @@
-const config = require("./config").config;
+const config = require("./config");
 
 const colyseus = require('colyseus');
 const nosync = require("colyseus").nosync;

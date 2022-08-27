@@ -69,16 +69,16 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title><?PHP echo CHANNEL;?> | Raise-Your-Hand</title>
-	<link rel="canonical" href="https://raiseyourhand.app">
+	<title><?PHP echo CHANNEL;?> | iChoose Live</title>
+	<link rel="canonical" href="https://ichoose.live">
 	
     <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="apple-mobile-web-app-title" content="Raise Your Hand">
-    <meta name="application-name" content="Raise Your Hand">
+    <meta name="apple-mobile-web-app-title" content="iChoose.live">
+    <meta name="application-name" content="iChoose.live">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     
@@ -198,7 +198,7 @@
 							</div>
 							
 							<div class="column has-text-left">
-								<p class='title'>Raise-Your-Hand</p> 
+								<p class='title'>iChoose LIVE</p> 
 								<p class='subtitle'>is a simple tool to collect live feedback.</p>
 								<div class='content'>
 									<ol>
@@ -341,7 +341,7 @@
 	</div>
 
 	<div id='progressbarContainer' class='state-question'>
-		<span class='title is-hidden-mobile'>Visit: <span class='has-text-danger'><b>raiseyourhand.app/<?PHP echo CHANNEL;?></b></span> to enter your response...</span>
+		<span class='title is-hidden-mobile'>Visit: <span class='has-text-danger'><b>iChoose.live/<?PHP echo CHANNEL;?></b></span> to enter your response...</span>
 		<div id='progressbar'></div>
 	</div>
 

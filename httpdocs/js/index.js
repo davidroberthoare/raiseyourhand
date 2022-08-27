@@ -70,7 +70,7 @@ M_RESULTSCHART = new Chart($('#m_ResultsChart'), managerSettings);
 
 
 if(CHANNEL){
-	CLIENT = new Colyseus.Client('wss://raiseyourhand.app:8443');
+	CLIENT = new Colyseus.Client('wss://'+location.hostname+':8443');
 	// CLIENT = new Colyseus.Client('ws://localhost:8080');
 
 	CLIENT.onClose.add(() => {
@@ -289,7 +289,7 @@ function setRole(role){
 
 	switch(role) {
 		case "none":
-			$(".heroTitle").text(" ~ Raise Your Hand");
+			$(".heroTitle").text(" ~ iChoose");
 		break;
 
 		case "manager":

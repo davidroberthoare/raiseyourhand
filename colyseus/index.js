@@ -2,7 +2,7 @@
 
 
 //include the config vars 
-const config = require("./config").config;
+const config = require("./config");
 // console.log("config vars:", config);
 
 
@@ -18,8 +18,10 @@ const port = config.serverPort;
 const app = express()
 
 const options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/raiseyourhand.app/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/raiseyourhand.app/fullchain.pem')
+  // key: fs.readFileSync('/etc/letsencrypt/live/raiseyourhand.app/privkey.pem'),
+  // cert: fs.readFileSync('/etc/letsencrypt/live/raiseyourhand.app/fullchain.pem')
+  key: fs.readFileSync('D:/P_SYNC/laragon/etc/ssl/laragon.key'),  //
+  cert: fs.readFileSync('D:/P_SYNC/laragon/etc/ssl/laragon.crt')  //
 };
 const server = https.createServer(options, app);
 // const server = http.createServer(app);
