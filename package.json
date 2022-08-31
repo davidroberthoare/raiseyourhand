@@ -1,0 +1,34 @@
+{
+  "name": "iChoose.live",
+  "version": "1.0.0",
+  "description": "a simple live-survey app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "localtunnel": "lt --subdomain ichoose --port 3123",
+    "localdev": "node index.js & lt --subdomain ichoose --port 3123",
+    "dev": "start npm run start && start npm run localtunnel"
+  },
+  "author": "david hoare",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "colyseus": "^0.13.3",
+    "consolidate": "^0.16.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-jwt": "^5.3.1",
+    "forever": "^1.0.0",
+    "google-auth-library": "^6.0.6",
+    "jsonwebtoken": "^8.5.1",
+    "key-file-storage": "^2.2.9",
+    "lokijs": "^1.5.12",
+    "mustache": "^4.0.1",
+    "request": "^2.88.0"
+  }
+}

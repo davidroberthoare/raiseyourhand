@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{roomid}} | iChoose Live</title>
+	<link rel="canonical" href="https://ichoose.live">
+	
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="apple-mobile-web-app-title" content="iChoose.live">
+    <meta name="application-name" content="iChoose.live">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-133464589-2"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	
+	  gtag('config', 'UA-133464589-2');
+	</script>
+
+    
+    
+    <link rel="stylesheet" href="/css/bulma.css" />
+    <link rel="stylesheet" href="/css/fontawesome.css">
+    <link rel="stylesheet" href="/css/anicollection.css">
+    <link rel="stylesheet" href="/css/chartjs.css">
+    
+    <link rel="stylesheet" href="/css/custom.css">
+
+
+</head>
+<body>
+
+
+	<!-- <div id='body_bg' class='rotator'>
+		<div class="bg bg1"></div>
+		<div class="bg bg2"></div>
+		<div class="bg bg3"></div>
+	</div> -->
+	
+
+
+
+
+
+<section class="hero is-info">
+  <div class="hero-body">
+    <div class="columns is-mobile">
+
+		<!-- HIDDEN ON MOBILE, SHOW ON EVERYTHING ELSE -->
+		<div class='column is-hidden-mobile'>
+			<span class="title">{{roomid}}<span class='heroTitle'></span></span>
+		</div>
+		<div class='column has-text-centered role-manager is-hidden-mobile'>
+			<span class='subtitle' style='line-height: 2em;'> Responses: <span class='answerCount'>0</span> / <span class='playerCount'>0</span></span>
+		</div>
+
+		<!-- SHOW ON MOBILE ONLY-->
+		<div class='column is-hidden-tablet role-player'>
+			<span class="title ">{{roomid}}<span class='heroTitle'></span></span>
+		</div>
+		<div class='column has-text-center is-hidden-tablet'>
+			<span class='subtitle' style='line-height: 2em;'><span class='answerCount'>0</span> / <span class='playerCount'>0</span></span>
+		</div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<!-- ******************** -->
+<!-- PLAYER -->
+<!-- ******************** -->
+
+<section class='has-text-centered roleSection role-player' style="position:relative;">
+
+	<div id='closedBox' class='box state-closed'>
+		<div class='title'>Waiting for a Question</div>
+		<div class='subtitle'>Please stand by...</div>
+		<div><i class="far fa-question-circle fa-5x fa-spin"></i></div>
+	</div>
+
+	<div id='p_QuestionContainer' class='state-question'>
+		<div id='p_QuestionText' class='subtitle'></div>
+		<div class='style-mult'>
+			<div class='p_AnswerContainer'>
+				<!-- <div id="answerBtn_mult_a" class='answerBtn button box' data-id='a' style='background-color:red;'><span>A</span></div>
+				<div id="answerBtn_mult_b" class='answerBtn button box' data-id='b' style='background-color:blue;'><span>B</span></div>
+				<div id="answerBtn_mult_c" class='answerBtn button box' data-id='c' style='background-color:green;'><span>C</span></div>
+				<div id="answerBtn_mult_d" class='answerBtn button box' data-id='d' style='background-color:yellow;'><span>D</span></div>
+				<div id="answerBtn_mult_e" class='answerBtn button box' data-id='e' style='background-color:purple;'><span>E</span></div> -->
+			</div>
+		</div>
+	</div>
+	
+	<div id='p_ResultsContainer' style='display: none;' class='state-results'>
+		<canvas id="p_ResultsChart"></canvas>
+	</div>
+
+	<div id='progressbarContainer' class='state-question'>
+		<span class='title is-hidden-mobile'>Visit: <span class='has-text-danger'><b>iChoose.live/{{roomid}}</b></span> to enter your response...</span>
+		<div id='progressbar'></div>
+	</div>
+
+</section>
+
+
+
+
+
+
+<!-- **********  -->
+<!-- ********** SCRIPTS ************ -->
+<!-- **********  -->
+<script type="text/javascript" src="/js/colyseus.js"></script>
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/chart.js"></script>
+<script type="text/javascript" src="/js/chartjs_pielabels.js"></script>
+<script type="text/javascript" src="/js/textfill.js"></script>
+<script type="text/javascript" src="/js/progressbar.js"></script>
+<script type="text/javascript" src="/js/randomcolor.js"></script>
+<!-- <script type="text/javascript" src="/js/howler.js"></script> -->
+<!-- main js file -->
+<script>
+	var CHANNEL = "{{roomid}}"; // <?PHP echo json_encode(CHANNEL);?>;
+	var ROLE = 'player';//<?PHP echo json_encode($role);?>;
+</script>
+<script type="text/javascript" src="/js/player.js"></script>
+</body>
+</html>
