@@ -94,8 +94,10 @@ exports.Room = class extends colyseus.Room {
       this.onMessage('test', (client, message) => {
         console.log('testing...')
         // this.send(client, {type:"test", data: message });
-        this.broadcast({ type: 'test', data: 'testing 123' })
+        this.broadcast('test', 'testing 123')
       })
+
+      
 
       this.onMessage('forceState', (client, message) => {
         // case "forceState":
@@ -140,11 +142,42 @@ exports.Room = class extends colyseus.Room {
           console.log('error submitting answer', err)
         }
       })
+
+
+      this.onMessage('update_roomid', (client, roomid) => {
+        console.log('update_roomid', roomid)
+        if(roomid && roomid!="" && roomid!=null){
+          try {
+            console.log('trying to UPDATE ROOMID...')
+            var doc = users.findOne({ userid: options.userid });
+            doc.channel = roomid;
+            users.update(doc);
+
+            this.broadcast('new_roomid', roomid );
+          }
+          catch (e) {
+            console.log('error inserting', e)
+            this.broadcast('new_roomid_error', e);
+          }
+        }else{
+          this.broadcast('new_roomid_error', "bad roomid");
+        }
+        
+      })
+
+
+
     } catch (err) {
       console.log('init error', err)
       return false
     }
   }
+
+
+
+
+
+
 
   onAuth (client, options, request) {
     console.log('checking client authorization for managers', options)
@@ -195,6 +228,13 @@ exports.Room = class extends colyseus.Room {
     //  }
   }
 
+
+
+
+
+
+
+
   onJoin (client, options) {
     console.log('joining: ', options)
     console.log('current num clients: ', this.clients.length)
@@ -220,12 +260,12 @@ exports.Room = class extends colyseus.Room {
   onLeave (client, consented) {
     console.log('client left', client.sessionId)
     try {
-      if (consented) {
-          throw new Error("consented leave");
-      }
+      // if (consented) {
+      //     throw new Error("consented leave");
+      // }
   
       // allow disconnected client to reconnect into this room until 20 seconds
-      this.allowReconnection(client, 240);
+      this.allowReconnection(client, 20);  
   
       // client returned! let's re-activate it.
       // this.state.players.get(client.sessionId).connected = true;

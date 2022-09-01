@@ -81,21 +81,28 @@ if (CHANNEL) {
         console.log(ROOM.sessionId, 'joined', ROOM.name)
 
       // *** LISTEN FOR VARIOUS MESSAGES ***
-      ROOM.onMessage(message => {
-        console.log('got message', message)
-        switch (message) {
-          case 'test':
-            console.log("heard 'test' message", message)
-            break
 
-          case 'setRole':
-            // setRole(message.data)
-            break
+      ROOM.onMessage("new_roomid", (roomid) => {
+        console.log("new_roomid", roomid);
+        alert("RoomID Updated to '"+roomid+"'. Refreshing...");
+        window.location.href = "/"+roomid;
+      });
 
-          default:
-            console.log('nothing to do with this message type...', message)
-        }
-      })
+      // ROOM.onMessage(message => {
+      //   console.log('got message', message)
+      //   switch (message) {
+      //     case 'test':
+      //       console.log("heard 'test' message", message)
+      //       break
+
+      //     case 'setRole':
+      //       // setRole(message.data)
+      //       break
+
+      //     default:
+      //       console.log('nothing to do with this message type...', message)
+      //   }
+      // })
 	//   
 
       ROOM.listen(
@@ -244,6 +251,7 @@ function setupBlankAnswers(){
 		$(".style-mult .p_AnswerContainer").append(str);
     counter += 1;
 	});
+  
 }
 
 
@@ -335,11 +343,6 @@ function updateQuestion () {
               'found a choice for this letter:',
               QUESTION.choices[letter]
             )
-            //manager
-            $(".answer_container[data-choice='" + letter + "']")
-              .css('display', 'flex')
-              .find('input')
-              .val(QUESTION.choices[letter].text)
 
             //player
             $(".answerBtn[data-id='" + letter + "']")
@@ -396,9 +399,9 @@ function updateAnswers () {
       }
 
       break
-
-    default:
+      
   }
+  $(".style-mult .p_AnswerContainer").show();
   updateProgressBar()
 }
 

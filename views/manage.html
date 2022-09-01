@@ -174,12 +174,13 @@
             </div>
         </div>
 
+
         <div class='section state-closed'>
             <button id='sendQuestionBtn' class='button is-large is-fullwidth is-info is-shadow'>SEND THIS QUESTION</button>
         </div>
 
         <div id='progressbarContainer' class='state-question'>
-            <span class='title is-hidden-mobile'>Visit: <span class='has-text-danger'><b>iChoose.live/{{roomid}}</b></span> to enter your response...</span>
+            <span class='title is-hidden-mobile'>Visit: <span class='has-text-danger'><b>iChoose.live/{{roomid}}</b> <a href="javascript:editRoom();">(edit)</a></span> to enter your response...</span>
             <div id='progressbar'></div>
         </div>
 
@@ -207,6 +208,7 @@
     <script type="text/javascript" src="/js/textfill.js"></script>
     <script type="text/javascript" src="/js/progressbar.js"></script>
     <script type="text/javascript" src="/js/howler.js"></script>
+<script type="text/javascript" src="/js/randomcolor.js"></script>
     
     <script>
         var CHANNEL = '{{roomid}}'; // <?PHP echo json_encode(CHANNEL);?>;

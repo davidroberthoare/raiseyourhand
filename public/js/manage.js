@@ -9,6 +9,10 @@ var NUM_PLAYERS = 0;
 var SOUNDS = {};
 
 const MULTS = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t"];
+const COLORS = [];
+MULTS.forEach(function(letter){
+  COLORS.push(randomColor({luminosity:"dark", seed: letter+letter+letter}));
+});
 const MIN_OPTIONS = 2;
 const MAX_OPTIONS = MULTS.length;
 // ********** STARTUP:
@@ -81,7 +85,7 @@ var defaultSettings = {
 			{
 				data: Object.values(ANSWERS),
 				borderColor: "transparent",
-				backgroundColor: ["red", "blue", "green", "yellow", "purple"],
+				backgroundColor: COLORS,
 			},
 		],
 	},
@@ -139,25 +143,33 @@ initRoom = () => {
 				goAuthorized(); //UPDATE the UI to show elements
 
 				// *** LISTEN FOR VARIOUS MESSAGES ***
-				ROOM.onMessage((message) => {
-					console.log("got message", message);
-					switch (message) {
-						case "test":
-							console.log("heard 'test' message", message);
-							break;
 
-						case "setRole":
-							// setRole(message.data);
-							break;
+        ROOM.onMessage("new_roomid", (roomid) => {
+          console.log("new_roomid", roomid);
+          alert("RoomID Updated to '"+roomid+"'. Refreshing...");
+          window.location.href = "/"+roomid+"/manage";
+        });
 
-						case "answerSubmitted":
-							SOUNDS.answer.play();
-							break;
+        ROOM.onMessage("new_roomid_error", (error) => {
+          console.log("new_roomid_error", error);
+          alert("Whoops! There was a problem changing to that room code. Please try again using a different code.")
+        });
 
-						default:
-							console.log("nothing to do with this message type...", message.type);
-					}
-				});
+        ROOM.onMessage("test", (message) => {
+          console.log("heard 'test' message", message);
+        });
+
+        ROOM.onMessage("setRole", (message) => {
+          console.log("setRole", message);
+          // setRole(message);
+        });
+
+        ROOM.onMessage("answerSubmitted", (message) => {
+          console.log("answerSubmitted", message);
+          SOUNDS.answer.play();
+        });
+
+
 
 				ROOM.listen(
 					"gameState",
@@ -572,6 +584,29 @@ function autoSize() {
 		$("#p_QuestionContainer").removeClass("invisible");
 	}, 500);
 }
+
+
+function editRoom(){
+  var code = prompt("Please enter a unique room code (no punctuation, spaces or capitals). \nNOTE: THIS WILL RESET THE QUESTION AND ALL ANSWERS.", "");
+  console.log("code entered", code);
+  if(code && code!=""){
+    code = code.toLowerCase();
+    code = code.replace(/[^a-z0-9']/g, "");
+  }
+  
+  if(code && code!=""){
+  // try to update the code on the server...
+    ROOM.send("update_roomid", code);
+  }
+
+}
+
+
+
+
+
+
+
 
 //GENERIC UTILITY FUNCTIONS
 function getSum(total, num) {
