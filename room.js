@@ -59,7 +59,8 @@ exports.Room = class extends colyseus.Room {
     var defaultQuestion = {
       text: '',
       style: 'mult',
-      chartType: 'pie',
+      plural: false,  //can accept more than one answer?
+      chartType: 'bar',
       status: '',
       choices: {
         a: {
@@ -83,6 +84,7 @@ exports.Room = class extends colyseus.Room {
       this.answers = {}
       this.setState({
         playerCount: 0,
+        answeredCount: 0,
         gameState: 'closed',
         question: JSON.stringify(this.question),
         answers: JSON.stringify({})
@@ -103,8 +105,17 @@ exports.Room = class extends colyseus.Room {
         // case "forceState":
         console.log('received new state...', message)
         if (message && message != '') {
+          this.broadcast('forceState', message);
           this.state.gameState = message
         }
+      })
+
+
+      this.onMessage('resetAnswers', (client, message) => {
+        console.log('received resetAnswers...')
+        this.answers = {}
+        this.state.answers = JSON.stringify(this.answers);
+        this.broadcast('forceState', "question");
       })
 
       this.onMessage('editQuestion', (client, message) => {
@@ -121,7 +132,7 @@ exports.Room = class extends colyseus.Room {
       })
 
       this.onMessage('submitAnswer', (client, message) => {
-        console.log('received player answer...')
+        console.log('received player answer...',message)
         try {
           this.answers[client.sessionId] = message
           console.log("current 'answers':", this.answers)
@@ -142,6 +153,7 @@ exports.Room = class extends colyseus.Room {
           console.log('error submitting answer', err)
         }
       })
+
 
 
       this.onMessage('update_roomid', (client, roomid) => {
@@ -286,11 +298,18 @@ exports.Room = class extends colyseus.Room {
     var totals = {}
     for (const prop in this.answers) {
       // console.log(`obj.${prop} = ${obj[prop]}`);
-      var r = this.answers[prop]
-      console.log('adding: ', r)
-      totals[r] = typeof totals[r] == 'undefined' ? 1 : totals[r] + 1
+      var chosen = this.answers[prop]
+      console.log('processing: ', chosen)
+
+      chosen.forEach(function(choice){
+        console.log('adding: ', choice)
+        var startingValue = (typeof totals[choice] == 'undefined') ? 0 : totals[choice];
+        totals[choice] = startingValue + 1;
+      })
+
     }
     this.state.answers = JSON.stringify(totals)
+    this.state.answeredCount = Object.keys(this.answers).length;
   }
 }
 //end of class

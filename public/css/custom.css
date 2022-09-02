@@ -76,10 +76,21 @@ body{
 	height: 200px;*/
 	flex-grow:1;
 	display: flex;
-		flex-direction: column;
+	flex-direction: column;
     justify-content: center;
     flex: 1;
 }
+
+#p_QuestionContainer .style-mult .answerBtn.selected{
+	border: thick solid green;
+    background: blue !important;
+    color: red;
+    filter: drop-shadow(10px 10px 8px black);
+    width: 96%;
+    margin-left: 2%;
+	font-style: italic;
+}
+
 
 #resultsChart{
 	max-height: 80vh;
@@ -199,7 +210,7 @@ body{
 #progressbarContainer {
 	position: relative;
 	/*width: 20vh;*/
- 	margin: 20px auto;
+ 	margin: 15vh auto;
 }
 #progressbar {
 	position: relative;

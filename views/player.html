@@ -97,15 +97,21 @@
 		<div class='style-mult'>
 			<div class='p_AnswerContainer' style="display:none;">
 			</div>
+
+			<div class="button is-primary is-large" id="pluralSubmitBtn">SUBMIT</div>
 		</div>
 	</div>
 	
 	<div id='p_ResultsContainer' style='display: none;' class='state-results'>
-		<canvas id="p_ResultsChart"></canvas>
+		<canvas id="resultsChart"></canvas>
 	</div>
+	<select id="chartTypeSelect">
+		<option value="pie">pie</option>
+		<option value="bar">bar</option>
+	</select>
 
 	<div id='progressbarContainer' class='state-question'>
-		<span class='title is-hidden-mobile'>Visit: <span class='has-text-danger'><b>iChoose.live/{{roomid}}</b></span> to enter your response...</span>
+		<!-- <span class='title is-hidden-mobile'>Visit: <span class='has-text-danger'><b>iChoose.live/{{roomid}}</b></span> to enter your response...</span> -->
 		<div id='progressbar'></div>
 	</div>
 
@@ -122,7 +128,7 @@
 <script type="text/javascript" src="/js/colyseus.js"></script>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/chart.js"></script>
-<script type="text/javascript" src="/js/chartjs_pielabels.js"></script>
+<script type="text/javascript" src="/js/chartjs_datalabels.js"></script>
 <script type="text/javascript" src="/js/textfill.js"></script>
 <script type="text/javascript" src="/js/progressbar.js"></script>
 <script type="text/javascript" src="/js/randomcolor.js"></script>

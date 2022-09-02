@@ -150,6 +150,38 @@
                         </div>
                     </div>
 
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Allow Mutliple?</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input id='isPlural' type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Display As?</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <select id='editChartType' class="input">
+                                        <option value="pie">Pie Chart</option>
+                                        <option value="bar">Bar Chart</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!-- ANSWER FIELDS WILL BE APPENDED HERE -->
                     <div id="answers"></div>
 
@@ -164,7 +196,8 @@
                             <div class="field">
                                 <div class="control">
                                     <input id='questionUpdateBtn' type='submit' class="button is-primary" value="UPDATE" />
-                                    <button type="button" id='questionResetBtn' class="button is-warning">RESET</button>
+                                    <button type="button" id='answersResetBtn' class="button is-warning">RESET ANSWERS</button>
+                                    <button type="button" id='questionResetBtn' class="button is-danger">RESET ALL</button>
                                 </div>
                             </div>
                         </div>
@@ -185,8 +218,14 @@
         </div>
 
         <div id='m_ResultsContainer' style='display: none;' class='state-results'>
-            <canvas id="m_ResultsChart"></canvas>
+            <canvas id="resultsChart"></canvas>
+            <select id="chartTypeSelect">
+                <option value="pie">pie</option>
+                <option value="bar">bar</option>
+            </select>
         </div>
+
+
     </section>
 
 
@@ -204,7 +243,7 @@
     <script type="text/javascript" src="/js/colyseus.js"></script>
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript" src="/js/chart.js"></script>
-    <script type="text/javascript" src="/js/chartjs_pielabels.js"></script>
+    <script type="text/javascript" src="/js/chartjs_datalabels.js"></script>
     <script type="text/javascript" src="/js/textfill.js"></script>
     <script type="text/javascript" src="/js/progressbar.js"></script>
     <script type="text/javascript" src="/js/howler.js"></script>

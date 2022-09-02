@@ -8,10 +8,13 @@ var NUM_RESPONSES = 0;
 var NUM_PLAYERS = 0;
 var SOUNDS = {};
 
+var CHARTTYPE = "pie";
+var LABELS = [];
+
 const MULTS = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t"];
 const COLORS = [];
-MULTS.forEach(function(letter){
-  COLORS.push(randomColor({luminosity:"dark", seed: letter+letter+letter}));
+MULTS.forEach(function (letter) {
+	COLORS.push(randomColor({ luminosity: "dark", seed: letter + letter + letter }));
 });
 const MIN_OPTIONS = 2;
 const MAX_OPTIONS = MULTS.length;
@@ -76,7 +79,8 @@ function goUnAuthorized(msg) {
 // **** end of starup routines
 
 // init the chart
-var M_RESULTSCHART;
+var RESULTSCHART;
+Chart.register(ChartDataLabels);
 var defaultSettings = {
 	type: "pie",
 	data: {
@@ -89,7 +93,13 @@ var defaultSettings = {
 			},
 		],
 	},
+	// plugins: [ChartDataLabels],
 	options: {
+		indexAxis: "y",
+
+		tooltips: {
+			enabled: true,
+		},
 		animation: {
 			easing: "easeInOutQuad",
 			duration: 1000,
@@ -99,29 +109,80 @@ var defaultSettings = {
 		aspectRatio: 1,
 		tooltips: { enabled: false },
 		plugins: {
-			labels: {
-				// render 'label', 'value', 'percentage', 'image' or custom function, default is 'percentage'
-				render: function (args) {
-					// { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
-					return args.label + ": " + args.value + " (" + args.percentage + "%)";
-				},
-
-				fontSize: 18,
-				fontColor: "#fff",
-				fontStyle: "bold",
-				fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-				textShadow: true,
-				shadowBlur: 4,
-				shadowOffsetX: 2,
-				shadowOffsetY: 2,
-				shadowColor: "rgba(0,0,0,0.75)",
-				textShadow: true,
-				overlap: true,
+			legend: {
+				display: false,
 			},
+
+			datalabels: {
+				color: "white",
+				font: {
+					weight: "bold",
+					// size: 20,
+				},
+        textAlign:'center',
+				formatter: function (value, context) {
+					console.log("formatting label", value, context);
+					let sum = 0;
+					let dataArr = context.chart.data.datasets[0].data;
+					dataArr.map((data) => {
+						sum += data;
+					});
+					let percentage = ((value * 100) / sum).toFixed(0) + "%";
+					let label = value > 0 ? LABELS[context.dataIndex] + "\n" + value + " (" + percentage + ")" : "";
+					return label;
+				},
+			},
+
 		},
 	},
 };
-M_RESULTSCHART = new Chart($("#m_ResultsChart"), defaultSettings);
+
+// setupChart(QUESTION.chartType);
+
+function setupChart(type) {
+	var settings = defaultSettings;
+
+	type = typeof type == "undefined" ? "pie" : type; //just in case, default to this...
+
+	settings.type = type;
+
+	//change different settings if needed for the different types
+	switch (type) {
+		case "pie":
+			settings.options.scales = {
+				x: {
+					display: false,
+				},
+				y: {
+					display: false,
+				},
+			};
+
+			break;
+
+		case "bar":
+			settings.options.scales = {
+				x: {
+					display: true,
+				},
+				y: {
+					display: true,
+				},
+			};
+
+			break;
+
+		default:
+			break;
+	}
+
+	if (RESULTSCHART) {
+		RESULTSCHART.destroy();
+	}
+
+	RESULTSCHART = new Chart($("#resultsChart"), defaultSettings);
+}
+
 // END CHART INIT
 
 //   START THE ROOM CONNECTION
@@ -144,38 +205,44 @@ initRoom = () => {
 
 				// *** LISTEN FOR VARIOUS MESSAGES ***
 
-        ROOM.onMessage("new_roomid", (roomid) => {
-          console.log("new_roomid", roomid);
-          alert("RoomID Updated to '"+roomid+"'. Refreshing...");
-          window.location.href = "/"+roomid+"/manage";
-        });
+				ROOM.onMessage("new_roomid", (roomid) => {
+					console.log("new_roomid", roomid);
+					alert("RoomID Updated to '" + roomid + "'. Refreshing...");
+					window.location.href = "/" + roomid + "/manage";
+				});
 
-        ROOM.onMessage("new_roomid_error", (error) => {
-          console.log("new_roomid_error", error);
-          alert("Whoops! There was a problem changing to that room code. Please try again using a different code.")
-        });
+				ROOM.onMessage("new_roomid_error", (error) => {
+					console.log("new_roomid_error", error);
+					alert(
+						"Whoops! There was a problem changing to that room code. Please try again using a different code."
+					);
+				});
 
-        ROOM.onMessage("test", (message) => {
-          console.log("heard 'test' message", message);
-        });
+				ROOM.onMessage("test", (message) => {
+					console.log("heard 'test' message", message);
+				});
 
-        ROOM.onMessage("setRole", (message) => {
-          console.log("setRole", message);
-          // setRole(message);
-        });
+				ROOM.onMessage("setRole", (message) => {
+					console.log("setRole", message);
+					// setRole(message);
+				});
 
-        ROOM.onMessage("answerSubmitted", (message) => {
-          console.log("answerSubmitted", message);
-          SOUNDS.answer.play();
-        });
+				ROOM.onMessage("answerSubmitted", (message) => {
+					console.log("answerSubmitted", message);
+					SOUNDS.answer.play();
+				});
 
-
+				ROOM.onMessage("forceState", (newState) => {
+					console.log("forceState", newState);
+					GAME_STATE = newState;
+					updateState();
+				});
 
 				ROOM.listen(
 					"gameState",
 					(change) => {
 						console.log("gameState", change.value);
-						if (change.value && change.value != "") {
+						if (change.value && change.value != "" && change.value != GAME_STATE) {
 							GAME_STATE = change.value;
 							updateState();
 						}
@@ -315,6 +382,12 @@ $("#sendQuestionBtn").click(function () {
 	$("#m_stateBtns button[data-state='question']").trigger("click");
 });
 
+$("#answersResetBtn").click(function () {
+	console.log("resetting ANSWERS to null");
+	// $("#m_stateBtns button[data-state='closed']").trigger("click");
+	ROOM.send("resetAnswers");
+});
+
 $("#questionResetBtn").click(function () {
 	console.log("resetting question to simple A-B...");
 
@@ -324,6 +397,12 @@ $("#questionResetBtn").click(function () {
 	// $("#add_one").show();
 	$("#m_stateBtns button[data-state='closed']").trigger("click");
 	editQuestion(true); //edit and reset
+});
+
+$("#chartTypeSelect").on("change", function () {
+	console.log("changing to:", $(this).val());
+	CHARTTYPE = $(this).val();
+	updateAnswers();
 });
 
 //***** DOCUMENT READY
@@ -360,13 +439,13 @@ $(document).ready(function () {
 // }
 
 function setupBlankAnswers() {
-  var counter = 0;
+	var counter = 0;
 	MULTS.forEach((letter) => {
 		console.log(letter);
 		var LETTER = letter.toUpperCase();
-    var isOptional = (counter>=2) ? "optional" : "";
+		var isOptional = counter >= 2 ? "optional" : "";
 		var str = "";
-		str += '<div class="answer_container '+isOptional+' field is-horizontal" data-choice="' + letter + '">';
+		str += '<div class="answer_container ' + isOptional + ' field is-horizontal" data-choice="' + letter + '">';
 		str += '	<div class="field-label is-normal">';
 		str += '		<label class="label">Choice ' + LETTER + ":</label>";
 		str += "	</div>";
@@ -389,7 +468,7 @@ function setupBlankAnswers() {
 		str += "</div>";
 
 		$("#answers").append(str);
-    counter += 1;
+		counter += 1;
 	});
 }
 
@@ -398,44 +477,23 @@ function editQuestion(reset) {
 
 	console.log("sending edited question");
 	QUESTION.text = $("#inputQuestion").val();
+	QUESTION.plural = $("#isPlural").is(":checked");
+	QUESTION.chartType = $("#editChartType").val();
+
 	//reset it...
 	QUESTION.choices = {
 		a: { text: "A" },
 		b: { text: "B" },
 	};
 
-  $(".answer_container:visible").each(function(){
-    var letter = $(this).data('choice');
-    // var LETTER = letter.toUpperCase();
-    var input = $(this).find('input').first();
+	$(".answer_container:visible").each(function () {
+		var letter = $(this).data("choice");
+		// var LETTER = letter.toUpperCase();
+		var input = $(this).find("input").first();
 
 		var newAnswer = input.val() != "" ? input.val() : input.data("def");
 		QUESTION.choices[letter] = { text: newAnswer };
-
 	});
-
-	// QUESTION.choices["a"].text =
-	// 	$("#inputChoiceA").val() != "" ? $("#inputChoiceA").val() : $("#inputChoiceA").data("def");
-	// QUESTION.choices["b"].text =
-	// 	$("#inputChoiceB").val() != "" ? $("#inputChoiceB").val() : $("#inputChoiceB").data("def");
-
-	// if ($("#inputChoiceC").closest(".answer_container").is(":visible")) {
-	// 	var newAnswer = $("#inputChoiceC").val() != "" ? $("#inputChoiceC").val() : $("#inputChoiceC").data("def");
-	// 	QUESTION.choices["c"] = { text: newAnswer };
-	// }
-
-	// if ($("#inputChoiceD").closest(".answer_container").is(":visible")) {
-	// 	var newAnswer = $("#inputChoiceD").val() != "" ? $("#inputChoiceD").val() : $("#inputChoiceD").data("def");
-	// 	QUESTION.choices["d"] = { text: newAnswer };
-	// }
-
-	// if ($("#inputChoiceE").closest(".answer_container").is(":visible")) {
-	// 	var newAnswer = $("#inputChoiceE").val() != "" ? $("#inputChoiceE").val() : $("#inputChoiceE").data("def");
-	// 	QUESTION.choices["e"] = { text: newAnswer };
-	// }
-
-	// if(($("#inputChoiceD").val()!="")) QUESTION.choices['d'] = {text: $("#inputChoiceD").val() };
-	// if(($("#inputChoiceE").val()!="")) QUESTION.choices['e'] = {text: $("#inputChoiceE").val() };
 
 	ROOM.send("editQuestion", { question: QUESTION, reset: reset });
 }
@@ -457,6 +515,9 @@ function updateQuestion() {
 
 				$("#inputQuestion").val(QUESTION.text);
 
+				$("#isPlural").prop("checked", QUESTION.plural);
+				$("#editChartType").val(QUESTION.chartType);
+
 				MULTS.forEach(function (letter) {
 					// console.log("letter: ", letter);
 					if (QUESTION.choices[letter]) {
@@ -476,6 +537,8 @@ function updateQuestion() {
 				});
 
 				autoSize();
+				$("#chartTypeSelect").val(QUESTION.chartType);
+				CHARTTYPE = QUESTION.chartType;
 
 				break;
 
@@ -486,46 +549,46 @@ function updateQuestion() {
 
 function updateAnswers() {
 	console.log("updating display with new 'answers'", ANSWERS);
-	switch (QUESTION.chartType) {
-		case "pie":
-			if (ANSWERS && Object.keys(ANSWERS).length > 0) {
-				console.log("drawing PIE chart with these answers...", ANSWERS);
-				var keys = Object.keys(QUESTION.choices);
-				var newLabels = [];
-				var newAnswers = [];
-				keys.forEach(function (item) {
-					newLabels.push(QUESTION.choices[item].text);
-					newAnswers.push(ANSWERS[item] ? ANSWERS[item] : 0);
-				});
+	setupChart(CHARTTYPE);
+	// switch (QUESTION.chartType) {
+	// case "pie":
+	if (ANSWERS && Object.keys(ANSWERS).length > 0) {
+		console.log("drawing PIE chart with these answers...", ANSWERS);
+		var keys = Object.keys(QUESTION.choices);
+		LABELS = [];
+		var newAnswers = [];
+		keys.forEach(function (item) {
+			LABELS.push(QUESTION.choices[item].text);
+			newAnswers.push(ANSWERS[item] ? ANSWERS[item] : 0);
+		});
+		console.log("labels for chart", LABELS);
+		RESULTSCHART.data.labels = LABELS;
+		RESULTSCHART.data.datasets[0].data = newAnswers;
+		RESULTSCHART.update();
 
-				M_RESULTSCHART.data.labels = newLabels;
-				// M_RESULTSCHART.data.datasets[0].data = Object.values(ANSWERS);
-				M_RESULTSCHART.data.datasets[0].data = newAnswers;
-				M_RESULTSCHART.update();
+		NUM_RESPONSES = ROOM.state.answeredCount;
+		console.log("NUM_RESPONSES", NUM_RESPONSES);
+		if (NUM_RESPONSES > 0) {
+			$(".answerCount").text(NUM_RESPONSES);
+			$("#m_stateBtns button[data-state='results']").prop("disabled", false);
+		}
+	} else {
+		console.log("no current answers");
+		//if it's empty or 0
 
-				NUM_RESPONSES = Object.values(ANSWERS).reduce(getSum);
-				console.log("NUM_RESPONSES", NUM_RESPONSES);
-				if (NUM_RESPONSES > 0) {
-					$(".answerCount").text(NUM_RESPONSES);
-					$("#m_stateBtns button[data-state='results']").prop("disabled", false);
-				}
-			} else {
-				console.log("no current answers");
-				//if it's empty or 0
+		RESULTSCHART.data.labels = [];
+		RESULTSCHART.data.datasets[0].data = [];
+		RESULTSCHART.update();
 
-				M_RESULTSCHART.data.labels = [];
-				M_RESULTSCHART.data.datasets[0].data = [];
-				M_RESULTSCHART.update();
-
-				NUM_RESPONSES = 0;
-				$(".answerCount").text(NUM_RESPONSES);
-				$("#m_stateBtns button[data-state='results']").prop("disabled", true);
-			}
-
-			break;
-
-		default:
+		NUM_RESPONSES = 0;
+		$(".answerCount").text(NUM_RESPONSES);
+		$("#m_stateBtns button[data-state='results']").prop("disabled", true);
 	}
+
+	// break;
+
+	// 	default:
+	// }
 	updateProgressBar();
 }
 
@@ -585,28 +648,22 @@ function autoSize() {
 	}, 500);
 }
 
+function editRoom() {
+	var code = prompt(
+		"Please enter a unique room code (no punctuation, spaces or capitals). \nNOTE: THIS WILL RESET THE QUESTION AND ALL ANSWERS.",
+		""
+	);
+	console.log("code entered", code);
+	if (code && code != "") {
+		code = code.toLowerCase();
+		code = code.replace(/[^a-z0-9']/g, "");
+	}
 
-function editRoom(){
-  var code = prompt("Please enter a unique room code (no punctuation, spaces or capitals). \nNOTE: THIS WILL RESET THE QUESTION AND ALL ANSWERS.", "");
-  console.log("code entered", code);
-  if(code && code!=""){
-    code = code.toLowerCase();
-    code = code.replace(/[^a-z0-9']/g, "");
-  }
-  
-  if(code && code!=""){
-  // try to update the code on the server...
-    ROOM.send("update_roomid", code);
-  }
-
+	if (code && code != "") {
+		// try to update the code on the server...
+		ROOM.send("update_roomid", code);
+	}
 }
-
-
-
-
-
-
-
 
 //GENERIC UTILITY FUNCTIONS
 function getSum(total, num) {
