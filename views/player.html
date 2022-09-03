@@ -41,11 +41,11 @@
 <body>
 
 
-	<!-- <div id='body_bg' class='rotator'>
+	<div id='body_bg' class='rotator'>
 		<div class="bg bg1"></div>
 		<div class="bg bg2"></div>
 		<div class="bg bg3"></div>
-	</div> -->
+	</div>
 	
 
 
@@ -72,7 +72,7 @@
 			<span class='subtitle' style='line-height: 2em;'><span class='answerCount'>0</span> / <span class='playerCount'>0</span></span>
 		</div>
 		
-		<div class='column has-text-center'>
+		<div class='column has-text-right'>
 			<button class='button is-warning' onclick="javascript: window.location.href += '/manage';" >Manage</button>
 		</div>
 
@@ -96,7 +96,7 @@
 		<div><i class="far fa-question-circle fa-5x fa-spin"></i></div>
 	</div>
 
-	<div id='p_QuestionContainer' class='state-question'>
+	<div id='p_QuestionContainer' class='state-question' style="display:none;">
 		<div id='p_QuestionText' class='subtitle'></div>
 		<div class='style-mult'>
 			<div class='p_AnswerContainer' style="display:none;">
@@ -108,11 +108,11 @@
 	
 	<div id='p_ResultsContainer' style='display: none;' class='state-results'>
 		<canvas id="resultsChart"></canvas>
+		<select id="chartTypeSelect">
+			<option value="pie">pie</option>
+			<option value="bar">bar</option>
+		</select>
 	</div>
-	<select id="chartTypeSelect">
-		<option value="pie">pie</option>
-		<option value="bar">bar</option>
-	</select>
 
 	<div id='progressbarContainer' class='state-question'>
 		<!-- <span class='title is-hidden-mobile'>Visit: <span class='has-text-danger'><b>iChoose.live/{{roomid}}</b></span> to enter your response...</span> -->
