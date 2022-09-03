@@ -32,62 +32,22 @@
     <link rel="stylesheet" href="/css/bulma.css" />
     <link rel="stylesheet" href="/css/fontawesome.css">
     <link rel="stylesheet" href="/css/anicollection.css">
-    <link rel="stylesheet" href="/css/chartjs.css">
     
     <link rel="stylesheet" href="/css/custom.css">
 
-	
-	<!-- <meta name="google-signin-scope" content="profile email"> -->
-    <!-- <meta name="google-signin-client_id" content="243845994317-jfn5k215frni7svon27uc4jjnrmsl4vq.apps.googleusercontent.com"> -->
-    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script>
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log("ID: " + profile.getId());
-            console.log('Full Name: ' + profile.getName());
-
-            // The ID token you need to pass to your backend:
-            var id_token = googleUser.getAuthResponse().id_token;
-            // console.log("ID Token: " + id_token);
-
-            var userdata = {
-                id: profile.getId(),
-                name: profile.getName()
-            };
-            var cookiestring = JSON.stringify(userdata);
-            Cookies.set('user', cookiestring, { expires: 60000 }); // Expires in 10 minutes
-
-            $("#chooser").show();
-            $(".intro_text").addClass('hidden');
-
-        }
-        
-        
-        
-    </script> -->
 
 	  
-	<script>
-
-	  function gothere(){
-            if($("#room_code").val()!=''){
-               window.location.href = "/room/" + $("#room_code").val(); 
-            }else{
-                alert("please enter a room code");
-            }
-        }
-
-  </script>
+	
 
 </head>
 <body>
 
 
-	<!-- <div id='body_bg' class='rotator'>
+	<div id='body_bg' class='rotator'>
 		<div class="bg bg1"></div>
 		<div class="bg bg2"></div>
 		<div class="bg bg3"></div>
-	</div> -->
+	</div>
 	
 
   
@@ -102,46 +62,9 @@
     <div class="columns is-mobile">
 
 		<!-- HIDDEN ON MOBILE, SHOW ON EVERYTHING ELSE -->
-		<div class='column is-hidden-mobile'>
-			<span class="title"><?PHP echo CHANNEL;?><span class='heroTitle'></span></span>
+		<div class='column'>
+			<span class="title">iChoose Live</span>
 		</div>
-		<div class='column has-text-centered role-manager is-hidden-mobile'>
-			<span class='subtitle' style='line-height: 2em;'> Responses: <span class='answerCount'>0</span> / <span class='playerCount'>0</span></span>
-		</div>
-
-		<!-- SHOW ON MOBILE ONLY-->
-		<div class='column is-hidden-tablet role-player'>
-			<span class="title "><?PHP echo CHANNEL;?><span class='heroTitle'></span></span>
-		</div>
-		<div class='column has-text-center is-hidden-tablet'>
-			<span class='subtitle' style='line-height: 2em;'><span class='answerCount'>0</span> / <span class='playerCount'>0</span></span>
-		</div>
-		
-
-
-
-		<div class='column is-narrow'>
-
-			<div class='role-manager is-pulled-right'>
-				<span id='m_stateBtns'>
-					<button data-state='closed' class='button is-hidden-mobile'>Edit (closed)</button>
-					<button data-state='question' class='button is-hidden-mobile'>Show Choices</button>
-					<button data-state='results' class='button is-hidden-mobile' disabled="disabled">Show Results</button>
-
-					<button data-state='closed' class='button is-hidden-tablet'>Edit</button>
-					<button data-state='question' class='button is-hidden-tablet'>Choices</button>
-					<button data-state='results' class='button is-hidden-tablet' disabled="disabled">Results</button>
-				</span>
-			</div>		
-
-			<!-- <div class='role-player is-pulled-right'>
-				<button id='p_showChoices' class='button is-primary'>Choices</button>
-				<button id='p_showResults' class='button' disabled='disabled'>Results</button>
-			</div>	 -->	
-			
-		</div>
-		
-
 
     </div>
   </div>
@@ -154,14 +77,12 @@
 <!-- DEFAULT -->
 <!-- ******************** -->
 <section class='has-text-centered roleSection role-none'>
-	<!--<div class='title'>Welcome :-)</div>-->
 	<div class='box'>
-		<?PHP if(CHANNEL==false){ ?>
 		<div class='subtitle'>Welcome :-) Please enter a Room Code:</div>
-		<form id='codeInput'>
+		<!-- <form id='codeInput'> -->
 			<input type='text' class='input is-large has-text-centered' id='codeInputTxt' placeholder="eg. 'myroom'">
-			<input type='submit' class='button is-large is-info' value="Join that room!" style='margin-top:1em;'>
-		</form>
+			<button class='button is-large is-info'style='margin-top:1em;' onclick="gothere();" >Join that room!</button><br>
+		<!-- </form> -->
 		
 			
 				<div class="section columns">
@@ -187,183 +108,8 @@
 				</div>
 			</div>
 		</div>
-		
-		<?PHP }else{ ?>
-			<div class='subtitle'>Connecting to your room: <?PHP echo CHANNEL;?> <br>
-			please stand by...</div>
-			<div><i class="fas fa-sync fa-5x fa-spin"></i></div>
-		
-		<?PHP } ?>
 	</div>
 </section>
-
-
-
-
-
-
-<!-- ******************** -->
-<!-- MANAGER -->
-<!-- ******************** -->
-
-<section class='has-text-centered roleSection role-manager' style="display:none;">
-	<div class='state-closed state-question'>
-		<div class='subtitle'>Question and Choices: <span id='questionMode'></span></div>
-		<div class='box'>
-			<form id='questionForm'>
-
-
-				<div class="field is-horizontal">
-				  <div class="field-label is-normal">
-				    <label class="label">Question:</label>
-				  </div>
-				  <div class="field-body">
-				    <div class="field">
-				      <div class="control">
-				        <input id='inputQuestion' class="input" type="text" placeholder="Question...">
-				      </div>
-				    </div>
-				  </div>
-				</div>
-
-				<div class="answer_container field is-horizontal" data-choice='a'>
-				  <div class="field-label is-normal">
-				    <label class="label">Choice A:</label>
-				  </div>
-				  <div class="field-body">
-				    <div class="field">
-				      <div class="control">
-				        <input id='inputChoiceA' class="input" type="text" placeholder="A" data-def="A" data-choice='a'>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-
-				<div class="answer_container field is-horizontal" data-choice='b'>
-				  <div class="field-label is-normal">
-				    <label class="label">Choice B:</label>
-				  </div>
-				  <div class="field-body">
-				    <div class="field">
-				      <div class="control">
-				        <input id='inputChoiceB' class="input" type="text" placeholder="B" data-def="B" data-choice='b'>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-
-				<div class="answer_container optional field is-horizontal" data-choice='c'>
-				  <div class="field-label is-normal">
-				    <label class="label">Choice C:</label>
-				  </div>
-				  <div class="field-body">
-				    <div class="field">
-				      <div class="control">
-				        <input id='inputChoiceC' class="input" type="text" placeholder="C" data-def="C" data-choice='c'>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-
-				<div class="answer_container optional field is-horizontal" data-choice='d'>
-				  <div class="field-label is-normal">
-				    <label class="label">Choice D:</label>
-				  </div>
-				  <div class="field-body">
-				    <div class="field">
-				      <div class="control">
-				        <input id='inputChoiceD' class="input" type="text" placeholder="D" data-def="D" data-choice='d'>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-
-				<div class="answer_container optional field is-horizontal" data-choice='e'>
-				  <div class="field-label is-normal">
-				    <label class="label">Choice E:</label>
-				  </div>
-				  <div class="field-body">
-				    <div class="field">
-				      <div class="control">
-				        <input id='inputChoiceE' class="input" type="text" placeholder="E" data-def="E" data-choice='e'>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-
-				<div class="field is-horizontal">
-				  <div class="field-label">
-				    <!-- Left empty for spacing -->
-				    <i id='delete_one' class='state-closed fas fa-minus-circle fa-2x' style="display:none;"></i>
-				    <i id='add_one' class='state-closed fas fa-plus-circle fa-2x'></i> 
-				  </div>
-				  <div class="field-body">
-				    <div class="field">
-				      <div class="control">
-				        <input id='questionUpdateBtn' type='submit' class="button is-primary" value="UPDATE" />
-				    	<button type="button" id='questionResetBtn' class="button is-warning">RESET</button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-
-			</form>
-		</div>
-	</div>
-
-	<div class='section state-closed'>
-		<button id='sendQuestionBtn' class='button is-large is-fullwidth is-info is-shadow'>SEND THIS QUESTION</button>
-	</div>
-
-	<div id='progressbarContainer' class='state-question'>
-		<span class='title is-hidden-mobile'>Visit: <span class='has-text-danger'><b>iChoose.live/<?PHP echo CHANNEL;?></b></span> to enter your response...</span>
-		<div id='progressbar'></div>
-	</div>
-
-	<div id='m_ResultsContainer' style='display: none;' class='state-results'>
-		<canvas id="m_ResultsChart"></canvas>
-	</div>
-</section>
-
-
-
-
-
-
-
-<!-- ******************** -->
-<!-- PLAYER -->
-<!-- ******************** -->
-
-<section class='has-text-centered roleSection role-player' style="position:relative;display:none;">
-
-	<div id='closedBox' class='box state-closed'>
-		<div class='title'>Waiting for a Question</div>
-		<div class='subtitle'>Please stand by...</div>
-		<div><i class="far fa-question-circle fa-5x fa-spin"></i></div>
-	</div>
-
-	<div id='p_QuestionContainer' class='state-question'>
-		<div id='p_QuestionText' class='subtitle'></div>
-		<div class='style-mult'>
-			<div class='p_AnswerContainer'>
-				<div id="answerBtn_mult_a" class='answerBtn button box' data-id='a' style='background-color:red;'><span>A</span></div>
-				<div id="answerBtn_mult_b" class='answerBtn button box' data-id='b' style='background-color:blue;'><span>B</span></div>
-				<div id="answerBtn_mult_c" class='answerBtn button box' data-id='c' style='background-color:green;'><span>C</span></div>
-				<div id="answerBtn_mult_d" class='answerBtn button box' data-id='d' style='background-color:yellow;'><span>D</span></div>
-				<div id="answerBtn_mult_e" class='answerBtn button box' data-id='e' style='background-color:purple;'><span>E</span></div>
-			</div>
-		</div>
-	</div>
-
-	<div id='p_ResultsContainer' style='display: none;' class='state-results'>
-		<canvas id="p_ResultsChart"></canvas>
-	</div>
-</section>
-
-
-
-
 
 
 
@@ -376,18 +122,20 @@
 <!-- **********  -->
 <!-- ********** SCRIPTS ************ -->
 <!-- **********  -->
-<!-- <script type="text/javascript" src="/js/colyseus.js"></script> -->
-<!-- <script type="text/javascript" src="/js/jquery.js"></script> -->
-<!-- <script type="text/javascript" src="/js/chart.js"></script> -->
-<!-- <script type="text/javascript" src="/js/chartjs_pielabels.js"></script> -->
-<!-- <script type="text/javascript" src="/js/textfill.js"></script> -->
-<!-- <script type="text/javascript" src="/js/progressbar.js"></script> -->
-<!-- <script type="text/javascript" src="/js/howler.js"></script> -->
-<!-- main js file -->
+<script type="text/javascript" src="/js/jquery.js"></script>
+
 <script>
-	var CHANNEL = 123// <?PHP echo json_encode(CHANNEL);?>;
-	var ROLE = 'owner'//<?PHP echo json_encode($role);?>;
+
+	function gothere(){
+		  if($("#codeInputTxt").val()!=''){
+			  var url = "/" + $("#codeInputTxt").val(); 
+			  window.location.href = url;
+		  }else{
+			  alert("please enter a room code");
+		  }
+	  }
+
 </script>
-<!-- <script type="text/javascript" src="/js/index.js"></script> -->
+
 </body>
 </html>
