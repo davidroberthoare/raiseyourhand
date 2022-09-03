@@ -22,9 +22,8 @@ const room = require("./room"); // basic starter code
 
 
 
-// const port = Number(process.env.PORT || 2568);
-// const port = Number(process.env.PORT || 80);
-const port = Number(1234);
+const port = Number(process.env.PORT || 80);    //live
+// const port = Number(1234);   //local testing
 const app = express.default();
 
 
